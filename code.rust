@@ -1,0 +1,27 @@
+   use ic_cdk::export::candid::{CandidType, Deserialize};
+   use ic_cdk::storage;
+
+   #[derive(CandidType, Deserialize, Clone)]
+   struct Task {
+       id: u32,
+       description: String,
+   }
+
+   #[update]
+   fn add_task(description: String) {
+       let mut tasks: Vec<Task> = storage::get_mut();
+       let id = tasks.len() as u32 + 1;
+       tasks.push(Task { id, description });
+   }
+
+   #[query]
+   fn get_tasks() -> Vec<Task> {
+       storage::get()
+   }
+
+   #[update]
+   fn remove_task(id: u32) {
+       let mut tasks: Vec<Task> = storage::get_mut();
+       tasks.retain(|task| task.id != id);
+   }
+   

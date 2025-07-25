@@ -1,0 +1,38 @@
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>To-Do List</title>
+   </head>
+   <body>
+       <h1>To-Do List</h1>
+       <input type="text" id="task" placeholder="New Task">
+       <button onclick="addTask()">Add Task</button>
+       <ul id="taskList"></ul>
+
+       <script>
+           async function addTask() {
+               const taskInput = document.getElementById('task');
+               const taskDescription = taskInput.value;
+               await window.ic.call('todo_ic', 'add_task', { description: taskDescription });
+               taskInput.value = '';
+               loadTasks();
+           }
+
+           async function loadTasks() {
+               const tasks = await window.ic.call('todo_ic', 'get_tasks', {});
+               const taskList = document.getElementById('taskList');
+               taskList.innerHTML = '';
+               tasks.forEach(task => {
+                   const li = document.createElement('li');
+                   li.textContent = task.description;
+                   taskList.appendChild(li);
+               });
+           }
+
+           loadTasks();
+       </script>
+   </body>
+   </html>
+   

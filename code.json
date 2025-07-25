@@ -1,0 +1,9 @@
+   {
+       "canisters": {
+           "todo_ic": {
+               "type": "rust",
+               "source": "src/todo_ic"
+           }
+       }
+   }
+   
